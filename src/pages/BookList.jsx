@@ -1,3 +1,4 @@
+// src/pages/BookList.jsx
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../services/api'
@@ -8,30 +9,41 @@ export default function BookList() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    (async () => {
+    const fetchBooks = async () => {
       try {
         const { data } = await api.get('/api/books')
         setBooks(data)
       } catch (err) {
-        setError('Failed to load books')
+        setError('Failed to load books. Please try again later.')
       } finally {
         setLoading(false)
       }
-    })()
+    }
+    fetchBooks()
   }, [])
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div style={{ color: 'red' }}>{error}</div>
+  if (loading) return <div className="text-center py-6">Loading books...</div>
+  if (error) return <div className="text-red-600 text-center">{error}</div>
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <h2>All Books</h2>
-      <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6">All Books</h2>
+      <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
         {books.map(b => (
-          <Link key={b._id} to={`/books/${b._id}`} style={{ border: '1px solid #eee', padding: 12, borderRadius: 8, textDecoration: 'none', color: 'inherit' }}>
-            <img src={b.coverImage} alt={b.title} style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 6 }} />
-            <h3>{b.title}</h3>
-            <p style={{ opacity: 0.7 }}>by {b.author}</p>
+          <Link
+            key={b._id}
+            to={`/books/${b._id}`}
+            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white"
+          >
+            <img
+              src={b.coverImage}
+              alt={b.title}
+              className="w-full h-56 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="text-lg font-semibold">{b.title}</h3>
+              <p className="text-gray-500 text-sm">by {b.author}</p>
+            </div>
           </Link>
         ))}
       </div>
