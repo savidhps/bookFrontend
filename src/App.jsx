@@ -16,22 +16,56 @@ const ProtectedRoute = ({ children }) => {
 const Navbar = () => {
   const navigate = useNavigate()
   const authed = isAuthed()
+
   return (
-    <nav style={{ display: 'flex', gap: 12, padding: 12, borderBottom: '1px solid #ddd' }}>
-      <Link to="/">Books</Link>
-      {authed && <Link to="/add">Add Book</Link>}
-      <div style={{ marginLeft: 'auto' }}>
-        {authed ? (
-          <button onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('user'); navigate('/'); }}>
-            Logout
-          </button>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <span style={{ margin: '0 8px' }}>|</span>
-            <Link to="/register">Register</Link>
-          </>
-        )}
+    <nav className="bg-blue-600 text-white shadow-md">
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+        <div className="flex gap-4">
+          <Link
+            to="/"
+            className="hover:bg-blue-500 px-3 py-2 rounded-md transition text-3xl"
+          >
+            📚 Books
+          </Link>
+          {authed && (
+            <Link
+              to="/add"
+              className="hover:bg-blue-500 px-3 py-2 rounded-md transition text-l mt-2 border border-white"
+            >
+              ➕ Add Book
+            </Link>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          {authed ? (
+            <button
+              onClick={() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('user')
+                navigate('/')
+              }}
+              className="bg-blue-500 hover:bg-white hover:text-blue-600 px-3 py-2 border-2 border-white rounded-md transition "
+            >
+               Logout
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="hover:bg-blue-500 px-3 py-2 rounded-md transition"
+              >
+                🔑 Login
+              </Link>
+              <Link
+                to="/register"
+                className="hover:bg-blue-500 px-3 py-2 rounded-md transition"
+              >
+                📝 Register
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   )
@@ -39,15 +73,22 @@ const Navbar = () => {
 
 export default function App() {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div style={{ padding: 16, maxWidth: 900, margin: '0 auto' }}>
+      <div className="max-w-5xl mx-auto p-6">
         <Routes>
           <Route path="/" element={<BookList />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/books/:id" element={<BookDetails />} />
-          <Route path="/add" element={<ProtectedRoute><AddBook /></ProtectedRoute>} />
+          <Route
+            path="/add"
+            element={
+              <ProtectedRoute>
+                <AddBook />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </div>
