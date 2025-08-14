@@ -22,14 +22,81 @@ export default function AddBook() {
   }
 
   return (
-    <form onSubmit={onSubmit} style={{ display: 'grid', gap: 12, maxWidth: 500 }}>
-      <h2>Add Book</h2>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      <input placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} required />
-      <input placeholder="Author" value={author} onChange={e=>setAuthor(e.target.value)} required />
-      <textarea placeholder="Description" value={description} onChange={e=>setDescription(e.target.value)} required />
-      <input placeholder="Cover Image URL" value={coverImage} onChange={e=>setCoverImage(e.target.value)} required />
-      <button type="submit">Create</button>
-    </form>
+    <div className="flex justify-center items-center py-8 px-4">
+      <form 
+        onSubmit={onSubmit} 
+        className="bg-white shadow-lg rounded-xl p-6 w-full max-w-lg space-y-5"
+      >
+        <h2 className="text-2xl font-bold text-gray-800">📚 Add a New Book</h2>
+
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded-md">
+            {error}
+          </div>
+        )}
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">Title</label>
+          <input
+            type="text"
+            placeholder="Enter book title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">Author</label>
+          <input
+            type="text"
+            placeholder="Enter author's name"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+            className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">Description</label>
+          <textarea
+            placeholder="Write a short description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            rows="4"
+            className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none resize-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-1">Cover Image URL</label>
+          <input
+            type="url"
+            placeholder="https://example.com/image.jpg"
+            value={coverImage}
+            onChange={(e) => setCoverImage(e.target.value)}
+            required
+            className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 outline-none"
+          />
+          {coverImage && (
+            <img 
+              src={coverImage} 
+              alt="Preview" 
+              className="mt-3 w-32 h-40 object-cover rounded-md border"
+            />
+          )}
+        </div>
+
+        <button 
+          type="submit" 
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition"
+        >
+          Add Book
+        </button>
+      </form>
+    </div>
   )
 }
